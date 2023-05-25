@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='/WSClient.js'></script>
+    <title>Captura de articulos.</title>
+</head>
+<body>
+    <div class="formulario">
+        <form class="forms">
+            <fieldset class="Captura">
+                <!-- <legend>Captura de articulo.</legend> -->
+
+                <label for="nombre">Nombre</label>
+                <input type="text" placeholder="Nombre de articulo." id="Captura_nombre">
+
+                <label for="descripcion">Descripción</label>
+                <textarea id="Captura_descripcion" name="descripcion"></textarea>
+
+                <label for="precio">Precio</label>
+                <input type="text" placeholder="Precio" id="Captura_precio">
+
+                <label for="cantidad">Cantidad</label>
+                <input type="number" placeholder="Cantidad" id="Captura_cantidad">
+                
+                <label for="fotografia">Fotografía</label>
+                <input type="file" id="Captura_fotografia" accept="image/jpeg, image/png" name="fotografia">
+
+            </fieldset>
+
+            <input type="submit" value="Guardar" class="btn-accept">
+        </form>
+    </div>
+    
+</body>
+</html>

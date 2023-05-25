@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar articulos.</title>
+</head>
+<body>
+    <div class="Comprar">
+        <div class="informacion">
+            <h1>Comprar articulos.</h1>
+        </div>
+        <div class="campos">
+            <label for="Nombre">Nombre</label>
+            <input type="text" placeholder="Ingrese nombre" id="Compra_Nombre">
+            
+            <label for="Descripcion">Descripción</label>
+            <input type="text" placeholder="Ingrese descripcion" id="Compra_Descripcion">
+
+            <input type="submit" value="Buscar" class="btn-accept">
+        </div>
+        <!-- <input type="search" placeholder="Buscar articulo" id="busqueda"> -->
+        <div class="btn-carrito">
+            <button>
+                <img src="../img/Car2.png" alt="Carrito Compras">
+            </button>
+        </div>
+
+    </div>
+    //Aqui se va a mostrar los datos del SELECT
+    <div class="busqueda" id="buqueda_producto">
+        <table class="Productos">
+            <tr>
+                <td>Nombre</td>
+                <td>Descripción</td>
+                <td>Fotografía</td>
+            </tr>
+            <tr>
+                <td id="Consulta_nombre"></td>
+                <td id="Consulta_descripcion"></td>
+                <td id="Consulta_fotografia"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+        </table>
+          
+    </div>
+</body>
+</html>

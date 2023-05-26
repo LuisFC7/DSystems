@@ -25,7 +25,8 @@
         
               // Agregar el contenido HTML a la ventana emergente
               ventanaEmergente.document.write(`
-                <h1>Descripción del artículo</h1>
+                //<h1>Descripción del artículo</h1>
+                <h1 style="font-family:'Staatliches', cursive; text-transform:uppercase;">Descripción del artículo</h1>
 
                 <p>${descripcion}</p>
                 <button onclick="window.close()">Cerrar</button>
@@ -234,7 +235,8 @@
       <input type="number" id="Consulta_cantidad" value="1">
       <button id="Boton_compra">Comprar</button>
       <div id="datos_consulta" style="display:none">
-        <input type="text" name="" id="Consulta_Descripcion" placeholder="aqui" value="Si funciona">
+        <input type="text" name="" id="Consulta_Descripcion" placeholder="aqui" value="Sabritas Cheetos torciditos sabor queso y chile 240 g">
+        //<input type="text" name="" id="Consulta_Descripcion" placeholder="aqui" value="Del Valle 100% Jugo sabor Naranja de 946 mililitros.">
       </div>
       <!-- VISUALIZACION DE VENTANA CON DESCRIPCION -->
       <button id="Boton_descripcion" onclick="ventanaDescripcion()">Ver descripción</button>

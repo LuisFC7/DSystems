@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <style>
+
+      :root{
+        --primario:#F2E579;
+        --primarioalt:#E5D448;
+        --secundario:#000;
+        --blanco:#FFF;
+        --fuenteprincipal:'Staatliches', cursive;
+        --morado:#8946FF;
+    
+    }
+    
+    html {
+        box-sizing: border-box;
+        font-size: 62.5%;
+    }
+    
+    *, *:before, *:after {
+        box-sizing: inherit;
+    }
+    
+    /**Globales**/
+    
+    body{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--primario);
+        font-size: 1.6rem;
+        line-height: 1.5;
+    }
+
+    input {
+      height: 4rem;
+      width: auto;
+      border: 3px solid black;
+    }
+    
+    input::placeholder {
+      font-style: italic;
+    }
+    
+      img{
+        width:150px;
+        height:150px;
+      }
+
+      button {
+        width: auto;
+        height: auto;
+        border-radius: 5px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        background-color: #007bff;
+        border: 4px solid black;
+      }
+      
+      button:hover {
+        background-color: lightblue;
+        cursor: pointer;
+      }
+
+      #Principal{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+      }
+      
+      #menuPrincipal{ 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      }
+
+      h1,h2,h3{
+        text-align: center;
+        color: var(--secundario);
+        font-family: 'Staatliches', cursive;
+    }
+    
+    h1{
+        font-size: 4rem;
+    }
+    
+    h2{
+        font-size: 3.2rem;
+    }
+    
+    h3{
+        font-size: 2.4rem;
+    }
+    #Consulta_fotografia {
+      border: 4px solid black;
+      border-radius: 2rem;
+    }
+
+    #Ver_articulo{
+      display: block;
+      justify-content: column;
+      justify-content: center;
+    }
+
+    #ContenidoArticulos{
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 3px solid black;
+
+    }
+    #ArticulosEncontrados1{
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 3px solid black;
+
+    }
+    #ArticulosEncontrados2{
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 3px solid black;
+
+    }
+
+    #Captura_articulos{
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 3px solid black;
+    }
+
+    
+
+    </style>
+    <script src="/WSClient.js"></script>
+    <!-- IMPLEMENTACIÓN DE SCRIPTS -->
+    <script>
+      var Fotografia=null;
+
+        //<!-- FUNCION PARA ABRIR VENTANA DE DESCRIPCION DE ARTICULO -->
+        function ventanaDesc()
+        {
+            // Obtener referencia a los elementos del DOM
+            const botonDescripcion = document.getElementById('Boton_descripcion');
+            const descripcionInput = document.getElementById('Consulta_Descripcion');
+        
+            // Agregar evento click al botón de Ver descripción
+            botonDescripcion.addEventListener('click', () => {
+              // Obtener la descripción del artículo
+              const descripcion = descripcionInput.value;
+        
+              // Crear la ventana emergente
+              const ventanaEmergente = window.open('', 'Descripción del artículo', 'width=400,height=300');
+        
+              // Abrir un nuevo documento en la ventana emergente
+              ventanaEmergente.document.open();
+        
+              // Agregar el contenido HTML a la ventana emergente
+              ventanaEmergente.document.write(`
+              <h1 style="font-family:'Staatliches', cursive; text-transform:uppercase;">Descripción del artículo</h1>
+
+              <p>${descripcion}</p>
+              <button onclick="window.close()">Cerrar</button>
+
+              `);
+        
+              // Cerrar la escritura en el documento de la ventana emergente
+              ventanaEmergente.document.close();
+            });
+          }
+        
+          // Llamar a la función para habilitar la funcionalidad
+          //<!-- abrirVentanaDescripcion(); -->
+
+         // <!-- FUNCION PARA DESPLEGAR PANTALLA DE CARRITO DE COMPRAS -->
+          function mostrarCarrito() {
+
+            const btnCarrito = document.getElementById('Btn-carrito');
+            const compraArticulos = document.getElementById('Compra_articulos');
+            const articulosCarrito = document.getElementById('Articulos_carrito');
+            const btnCerrar = document.getElementById('Btn_cerrar');
+        
+            btnCarrito.addEventListener('click', () => {
+              compraArticulos.style.display = 'none';
+              articulosCarrito.style.display = 'block';
+            });
+        
+            btnCerrar.addEventListener('click', () => {
+              articulosCarrito.style.display = 'none';
+              compraArticulos.style.display = 'block';
+            });
+          }
+
+          function mostrarOcultar(divMostrar,divOcultar,divOcultar2){
+            const divM = document.getElementById(divMostrar);
+            const divO = document.getElementById(divOcultar);
+            const divO2 = document.getElementById(divOcultar2);
+            if (divM) {
+              divM.style.display = 'block';
+            }
+            if (divO) {
+              divO.style.display = 'none';
+              divO2.style.display = 'none';
+            }
+          }
+
+          //Funcion para eliminar un producto (solo muestra un mensaje)
+          function eliminarConfirmacion() {
+            // Crear la ventana emergente
+            
+            var ventanaEmergente = window.confirm("¿Estás seguro de que deseas eliminar el artículo?");
+            //var hidee = document.getElementById(idName);
+
+            // Verificar la respuesta del usuario
+            if (ventanaEmergente) {
+              // El usuario hizo clic en "Aceptar"
+              alert("Artículo eliminado correctamente");
+              //mostrarOcultar('Compra_articulos',hidee,'')
+            } else {
+              // El usuario hizo clic en "Cancelar" o cerró la ventana emergente
+              // No se realiza ninguna acción adicional
+            }
+          }
+
+          function eliminarCarrito() {
+            // Crear la ventana emergente
+            var ventanaEmergente = window.confirm("¿Estás seguro de que deseas eliminar el carrito de compras?");
+            const valor1 = document.getElementById("Articulos_carrito");
+            const valor2 = document.getElementById("Carrito_Vacio");
+            const elementosCarrito = document.querySelectorAll('[id="ContenidoArticulos"]');
+            //const valor3 = document.getElementById("ContenidoArticulos");
+            // Verificar la respuesta del usuario
+            if (ventanaEmergente) {
+              // El usuario hizo clic en "Aceptar"
+              alert("Carrito eliminado correctamente");
+              elementosCarrito.forEach(elemento => {
+                elemento.style.display = "none";
+              });
+              valor2.style.display='block';
+
+            } else {
+              // El usuario hizo clic en "Cancelar" o cerró la ventana emergente
+              // No se realiza ninguna acción adicional
+            }
+          }
+
+       //   <!-- FUNCIONES PARA PRODUCIR JSON -->
+
+         // <!-- FUNCION PARA LEER FOTOGRAFIA -->
+          function readSingleFile(files,imagen)
+          {
+            var file = files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e)
+            {
+            imagen.src = reader.result;
+            // reader.result incluye al principio: "data:image/jpeg;base64,"
+            Fotografia = reader.result.split(',')[1];
+            };
+            reader.readAsDataURL(file);
+          }
+
+//<!-- ALTA DE UN ARTICULO -->
+          function capturaArticulo(){
+            var URL = "/Servicio/rest/ws";
+            var cliente = new WSClient(URL);
+            // var fotografia = null;
+
+            //Aqui ingresar todos los campos para el alta de un producto.
+            var Articulo={
+                Nombre: document.getElementById("Captura_nombre").value,
+                Descripcion: document.getElementById("Captura_descripcion").value,
+                Precio: document.getElementById("Captura_precio").value,
+                Cantidad: document.getElementById("Captura_cantidad").value,
+                Fotografia: Fotografia
+            };
+
+            cliente.postJson("CapturaArticulo",
+            {
+                Articulo: Articulo
+            },
+            function(code,result)
+            {
+                if(code==200)
+                    alert("Articulo agregado correctamente :)");
+                else
+                    alert(JSON.stringify(result));
+            });
+          }
+
+         // <!-- FUNCION PARA REALIZAR LA PRIMERA CONSULTA EN LA BUSQUEDA -->
+          function comprarArticulo(){
+            var URL = "/Servicio/rest/ws";
+            var cliente = new WSClient(URL);
+            // var fotografia = null;
+        
+            cliente.postJson("Compra_articulos",
+            {
+                Nombre:document.getElementById("Consulta_nombre").value,
+                Descripcion:document.getElementById("Consulta_descripcion").value
+            },
+        
+            function(code,result)
+            {
+                //Primero se comprueba que exista el produeto
+                if(code==200){
+                    Fotografia=result.Fotografia;
+                    document.getElementById("Consulta_fotografia").src=Fotografia != null ? "data:image/jpeg; base64,"+Fotografia: "/usuario_sin_foto.pbg";
+                    document.getElementById("Consulta_nombre").value=result.Nombre;
+                    document.getElementById("Consulta_precio").value=result.Descripcion;
+                    // document.getElementById("Producto_precio").value=result.Precio;
+                    // document.getElementById("Producto_cantidad").value=result.Cantidad;
+                   
+                }else{
+                    alert("El articulo buscado no se encuentra disponible"+JSON.stringify(result));
+                    
+                }
+            });
+          }
+
+        //<!-- ESTA CONSULTA SOLO SE HACER PARA LA VENTANA DEL CARRITO DE COMPRAS -->
+        function descripcionCarrito(){
+          var cliente = new WSCliente(URL)
+          var Articulo={
+            Descripcion:document.getElementById("ConsultaDescripcion").value
+          }
+        }
+
+        function actualizarCarrito(){
+          var cliente = new  WSClient(URL);
+          var Articulo={
+            Nombre: document.getElementById("Captura_nombre").value,
+            Descripcion: document.getElementById("Captura_descripcion").value,
+            Precio: document.getElementById("Captura_precio").value,
+            Cantidad: document.getElementById("Captura_cantidad").value,
+            Fotografia: Fotografia
+          };
+
+        }
+
+        function ComprarValidacion(){
+          const valor = document.getElementById(Consulta_cantidad);
+          const valor2 = document.getElementById(Captura_cantidad);
+          if(valor>valor2 || valor<1)
+            alert("La cantidad ingresada supera la existencia del articulo o es menor a 0");
+          if(valor<=valor2 && valor>0)
+            alert("Añadido al carrito de compras con éxito")
+
+        }
+
+        function ingresarArticulo(){
+          alert("Artículo agregado exitosamente.")
+          mostrarOcultar('Principal','Captura_articulos')
+        }
+
+
+        function buscarArticulo(){
+          const valor1 = document.getElementById("Consulta_nombre").value;
+          const valor2 = document.getElementById("Consulta_descripcion").value;
+          const comparacion = document.getElementById("Consulta_nombreEncontrados").value;
+          const comparacion2 = document.getElementById("Consulta_DescripcionEncontrados").value;
+          const divO = document.getElementById("Ver_articulo");
+          const divO2 = document.getElementById("ArticulosEncontrados1");
+          const divO3 = document.getElementById("ArticulosEncontrados2");
+
+          if(valor1 === "Cheetos torciditos" || valor2 === "torciditos"){
+            divO.style.display = 'block';
+            divO2.style.display = 'flex';
+            divO3.style.display = 'none';
+           
+           //mostrarOcultar('ArticulosEncontrados1','','');
+          } else  if(valor1 === "Jugo Naranja" || valor2 === "Naranja"){
+            divO.style.display = 'block';
+            divO2.style.display = 'none';
+            divO3.style.display = 'flex';
+            
+          }else{
+            alert("Producto no encontrado")
+          }
+          
+        }
+
+        function ultima(){
+          const valor1 = document.getElementById("Captura_articulos");
+          const valor2= document.getElementById("Principal");
+
+          valor1.style.display='flex';
+          valor2.style.display='none';
+
+        }
+
+        
+      
+    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <title>Tarea 7</title>
+</head>
+<body>
+  <div id="Principal" style="display: block;" >
+    <div class="titulo">
+      <h1>Articulos</h1>
+    </div>
+    <!-- MENU PRINCIPAL -->
+    <div class="menuPrincipal">
+        <button onclick="ultima()">Captura artículo</button>
+        <button onclick="mostrarOcultar('Compra_articulos','Principal')">Compra de artículos</button>
+    </div>
+  </div>
+
+    <!-- PANTALLA CAPTURA DE ARTICULOS -->
+      <div id="Captura_articulos" style="display:none">
+        <h1>Captura de artículos</h1>
+        <label for="">Nombre artículo</label>
+        <input type="text" id="Captura_nombre" placeholder="Nombre">
+        <br>
+        <label for="">Descripción artículo</label>
+        <textarea id="Captura_descripcion" placeholder="Descripción"></textarea>
+        <br>
+        <label for="">Precio artículo</label>
+        <input type="text" id="Captura_precio" placeholder="Precio">
+        <br>
+        <label for="">Cantidad artículo</label>
+        <input type="text" id="Captura_cantidad" placeholder="Cantidad" value="4">
+        <br>
+        <label for="">Imagen artículo</label>
+        <input type="file" id="Captura_fotografia">
+        <br>
+        <button onclick="ingresarArticulo()">Ingresar artículo</button>
+        <button onclick="mostrarOcultar('Principal','Captura_articulos')">Regresar a principal</button>
+      </div>
+      
+      <!-- PANTALLAS COMPRA DE ARTICULOS -->
+      <div id="Compra_articulos" style="display: none;">
+        <h1>Compra de artículos</h1>
+        <div id="Campos_articulos">
+          <input type="search" id="Consulta_nombre" placeholder="Buscar por Nombre">
+          <input type="search" id="Consulta_descripcion" placeholder="Buscar por Descripción">
+          <button id="Buscar_articulo" onclick="buscarArticulo()">Buscar artículo</button>
+
+        </div>
+
+        <div id="Btn-carrito">
+          <button onclick="mostrarOcultar('Articulos_carrito','Compra_articulos','Ver_articulo')">Carrito de compras</button>
+          <button onclick="mostrarOcultar('Principal','Compra_articulos','Ver_articulo')">Regresar a principal</button>
+        </div>
+
+      </div>
+
+  <!-- VISUALIZACIÓN DEL CARRITO DE COMPRAS. -->
+
+    <div id="Articulos_carrito" style="display:none;">
+      <h1>Artículos en el carrito</h1>
+
+      <div id="Carrito_Vacio" style="display:none;">
+        <h1>Carrito Vacio</h1>
+        <button id="Btn_cerrar" onclick="mostrarOcultar('Compra_articulos','Articulos_carrito','Ver_articulo')">Seguir Comprando</button>
+        
+      </div>
+
+      <div id="ContenidoArticulos" >
+        <img src="Articulo2.jpg">
+        <label for="">Nombre</label>
+        <input type="text" id="Consulta_nombre" readonly value="Cheetos torciditos">
+        <label for="">Cantidad</label>
+        <input type="number" id="Consulta_cantidad" value="2">
+        <label for="">Precio</label>
+        <input type="text" id="Consulta_precio" readonly value="46.50">
+        <label for="">Costo</label>
+        <input type="text" id="Costo" readonly value="93.00">
+        
+        <button id="Eliminar_articulo" onclick="eliminarConfirmacion()">Eliminar artículo</button>
+        <div>
+        </div>
+      </div>
+
+      <div id="ContenidoArticulos">
+        <h2>Total de compra: </h2>
+        <input type="text" id="Total_compra" readonly value="93.00">
+        <button id="Btn_cerrar" onclick="mostrarOcultar('Compra_articulos','Articulos_carrito','Ver_articulo')">Seguir Comprando</button>
+        <button id="Eliminar_carrito" onclick=eliminarCarrito()>Eliminar carrito de compra</button>
+      </div>
+      <!-- Producto 2 ELIMINAR -->
+      <div id="ContenidoArticulos"">
+        <img src="Articulo3.jpg">
+        <label for="">Nombre</label>
+        <input type="text" id="Consulta_nombre" readonly value="Jugo Naranja">
+        <label for="">Cantidad</label>
+        <input type="number" id="Consulta_cantidad" value="2">
+        <label for="">Precio</label>
+        <input type="text" id="Consulta_precio" readonly value="22.00">
+        <label for="">Costo</label>
+        <input type="text" id="Costo" readonly value="44.00">
+        
+        <button id="Eliminar_articulo" onclick="eliminarConfirmacion()">Eliminar artículo</button>
+        
+        
+      </div>
+
+      <div id="ContenidoArticulos">
+        <h2>Total de compra: </h2>
+        <input type="text" id="Total_compra" readonly value="44.00">
+        <button id="Btn_cerrar" onclick="mostrarOcultar('Compra_articulos','Articulos_carrito','Ver_articulo')">Seguir Comprando</button>
+        <button id="Eliminar_carrito" onclick=eliminarCarrito()>Eliminar carrito de compra</button>
+      </div>
+
+      <div id="ContenidoArticulos">
+        <h2>Total de compra: </h2>
+        <input type="text" id="Total_compra" readonly value="137.00">
+        <button id="Btn_cerrar" onclick="mostrarOcultar('Compra_articulos','Articulos_carrito','Ver_articulo')">Seguir Comprando</button>
+        <button id="Eliminar_carrito" onclick=eliminarCarrito()>Eliminar carrito de compra</button>
+      </div>
+    </div>
+
+  <!-- VISUALIZACIÓN DEL ARTICULO BUSCADO-->
+    <div id="Ver_articulo" style="display:none;">
+      <!-- <div> -->
+        <h1>Articulos encontrados</h1>
+        <div id="ArticulosEncontrados1"style="display:none; ">
+          <img src="Articulo2.jpg" id="Consulta_fotografia" >
+          <label for="">Nombre</label>
+          <input type="text" id="Consulta_nombreEncontrados" value="Cheetos torciditos" readonly>
+          <label for="">Precio</label>
+          <input type="text" id="Consulta_precio" value="46.50"readonly>
+          <label for="">Cantidad</label>
+          <input type="number" id="Consulta_cantidad" value="1">
+          <button id="Boton_compra" onclick="ComprarValidacion()">Comprar</button>
+          <div id="datos_consulta" style="display:none">
+            <input type="text" name="" id="Consulta_DescripcionEncontrados" placeholder="aqui" value="Sabritas Cheetos torciditos sabor queso y chile 240 g">
+          </div>
+          <!-- VISUALIZACION DE VENTANA CON DESCRIPCION -->
+          <button id="Boton_descripcion" onclick="ventanaDesc()">Ver descripción</button>
+        </div>
+      <!-- </div> -->
+      <!-- Producto 2 -->
+      <!-- <div> -->
+        <div id="ArticulosEncontrados2" style="display:none;">
+          <img src="Articulo3.jpg" id="Consulta_fotografia" >
+          <label for="">Nombre</label>
+          <input type="text" id="Consulta_nombreEncontrados" value="Jugo Naranja" readonly>
+          <label for="">Precio</label>
+          <input type="text" id="Consulta_precio" value="22.00"readonly>
+          <label for="">Cantidad</label>
+          <input type="number" id="Consulta_cantidad" value="1">
+          <button id="Boton_compra" onclick="ComprarValidacion()">Comprar</button>
+          <div id="datos_consulta" style="display:none">
+            <input type="text" name="" id="Consulta_DescripcionEncontrados" placeholder="aqui" value="Del Valle 100% Jugo sabor Naranja de 946 mililitros.">
+          </div>
+          <button id="Boton_descripcion" onclick="ventanaDesc()">Ver descripción</button>
+        </div>
+      </div>
+      <!-- VISUALIZACION DE VENTANA CON DESCRIPCION -->
+    <!-- </div> -->
+
+  </body>
+</html>

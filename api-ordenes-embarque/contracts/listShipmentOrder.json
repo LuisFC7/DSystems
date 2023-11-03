@@ -1,0 +1,9 @@
+[{
+  "shipmentOrderNumber":"number",
+  "shipment": "string",
+  "client": "string",
+  "hometown": "string",
+  "destinationCIty": "string",
+  "status": "string",
+  "creationData": "string"
+}]

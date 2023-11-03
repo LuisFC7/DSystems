@@ -1,0 +1,62 @@
+service: ordeneDeEmbarqueApi
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.10
+  role: arn:aws:iam::338653916706:role/account-dev-us-east-1-lambdaRole
+
+
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
+
+package:
+    exclude:
+      - node_modules/**
+      - test/**
+      - .git/**
+      - .serverless/**
+      - .terraform/**
+      - .idea/**
+
+
+functions:
+  api:
+    handler: handler.handler  # Cambia esto según tu configuración
+    layers:
+      - arn:aws:lambda:us-east-1:338653916706:layer:pyodbc-default:1  # ARN de tu capa Lambda
+    timeout: 10
+    events:
+      - http:
+          path: /
+          method: any
+          cors:
+            origin: '*'
+            headers:
+              - Accept
+              - Content-Type
+              - Content-Length
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+
+      - http:
+          path: '{proxy+}'
+          method: any
+          cors:
+            origin: '*'
+            headers:
+              - Accept
+              - Content-Type
+              - Content-Length
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+
